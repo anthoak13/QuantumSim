@@ -17,7 +17,7 @@
 CXX = g++
 
 #Name of generated library
-MYLIB = diehard
+MYLIB = quantumComp
 MAINSRC = main.C
 TESTSRC = test.C
 
@@ -25,13 +25,11 @@ TESTSRC = test.C
 BUILDDIR = build
 BINDIR = bin
 SRCDIR = src
+INCLDIR = include
 LIBDIR = lib
 
-# Specify header files directory.
-INCLDIR = $(PWD)/include
-
 # Specify all header files
-INCLS = $(INCLDIR)/*.h
+INCLS = $(shell pwd)/$(INCLDIR)/*.h
 
 # Find all SRC files
 SRCS = $(wildcard $(SRCDIR)/*.cpp)
@@ -77,7 +75,7 @@ $(BUILDDIR)/%.o : %.C $(INCLS)
 	@echo  "Building object file '$@' ..."
 	@$(CXX) -DSTANDALONE -g $(CXXFLAGS) -c -o $@ $<
 
-$(SO) : $(OBJS) $(ROOTDICO)
+$(SO) : $(OBJS) 
 	@echo "Building shared library"
 	@$(CXX) $(SOFLAGS) $(LDFLAGS) $^ -o $@
 
