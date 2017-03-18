@@ -32,8 +32,18 @@ QuantumRegister::QuantumRegister(const vecDouble& state)
 
 void QuantumRegister::prepareState(const vecDouble& state)
 {
+    //Check if state is normalized, and if it isn't calculate
+    //normalization parameter to adjust the state.
+    double mag = 0;
+    for(double elem : state)
+	mag += elem * elem;
+    if(mag != 1)
+	mag = 1/std::sqrt(mag);
+    
     for(int i = 0; i < reg.size(); i++)
-	reg.at(i) = state.at(i);
+    {
+	reg.at(i) = mag * state.at(i);
+    }
 }
 
 void QuantumRegister::prepareState(const vecBool& state)
@@ -51,15 +61,19 @@ int QuantumRegister::measure()
     //q tracks the current value to compare our rnd
     //number against. when r < q then we have found
     //our state.
-    long q = 0;
+    double q = 0;
 
-    std::cout << "Value to compare to is " << r << std::endl;
+    //std::cout << "Value to compare to is " << r << std::endl;
     
     //Loop through every possible state and figure out which
     //state is valid.
     for(result = 0; result < reg.size(); result++)
     {
-	q += reg.at(result);
+	double prob = reg.at(result) * reg.at(result);
+	q += prob;
+	//std::cout << "state,prob,reg:" << result << " "
+	//	  << prob << " "<< reg.at(result)
+	//	  << std::endl;
 	if( r <= q)
 	    break;
     }
@@ -72,11 +86,13 @@ int QuantumRegister::measure(vecBool& state)
     int result = measure();
     int temp = result;
 
-    //populate the passed state
+    //populate the passed state. state is in little-endian
+    //format.
     for( int i = 0; i < N; i++)
     {
-    std::cout << "Filling " << i << " with " <<
-    (temp & 1) << std::endl;
+	//std::cout << "Filling " << i << " with " <<
+	//    (temp & 1) << std::endl;
+
 	if(state.size() > i)
 	    state.at(i) = (temp & 1);
 	else
