@@ -23,18 +23,30 @@ void test1(QuantumRegister& reg);
 
 int main(int argc, char **argv)
 {
+    //create register initially in |000>
     QuantumRegister reg;
+    reg.prepareState(vecDouble{1,0,0,0,0,0,0,0});
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
-    Operator* O = new OHadamard(1);
 
-    std::cout << O->at(4,4) << std::endl;
-    
+    //Create H_1 operator and apply it to reg
+    Operator* O = new OHadamard(3);
+    reg.apply(O);
+    std::cout << "Applying H operator..." << std::endl;
+
+    //re-run the test, should be 50/50 |000>/|100>
+    TestHelper::runTest(test1, reg, 1000, false);
+
+    reg.apply(O);
+    std::cout << "Applying H operator..." << std::endl;
+
+    //rerun the test, should return to |000> state
+    TestHelper::runTest(test1, reg, 1000, false);
     return 0;
 }
 
 void test1(QuantumRegister& reg)
 {
-    reg.prepareState(vecDouble{1,1,1,1,1,1,1,1});
+
 }

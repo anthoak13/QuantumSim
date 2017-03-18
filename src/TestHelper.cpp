@@ -63,7 +63,11 @@ void TestHelper::printResults(const vecInt& results)
     //Print out the summary of the results
     for(int i = 0; i < results.size(); i++)
     {
-	std::cout << i << ": " << results.at(i)/(double) totalM
+	if(results.at(i) == 0)
+	    continue;
+	
+	printState(i, 3);
+	std::cout << ": " << results.at(i)/(double) totalM
 		  << std::endl;
     }
     

@@ -106,6 +106,19 @@ void QuantumRegister::collapse()
     for(int i = 0; i < reg.size(); i++)
 	reg.at(i) = ( i == result) ? 1 : 0;
 }
+
+void QuantumRegister::apply(Operator* O)
+{
+    auto temp = reg;
+
+    //usig new_i = O_{i,j}old_j
+    for(int i = 0; i < reg.size(); i++)
+    {
+	reg.at(i) = 0;
+	for(int j = 0; j < reg.size(); j++)
+	    reg.at(i) += O->at(i,j)*temp.at(j);
+    }
+}
     
 
 void QuantumRegister::init()
@@ -115,3 +128,4 @@ void QuantumRegister::init()
     reg = vecDouble(std::pow(2,N),0);
     reg[0] = 1;
 }
+

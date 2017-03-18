@@ -12,6 +12,8 @@
 
 
 //Abstract base class for all operators
+#ifndef OPERATOR_H
+#define OPERATOR_H
 
 class Operator
 {
@@ -23,3 +25,4 @@ private:
     //is just /delta_{1,b} = !(a xor b)
     bool kDelta(bool a, bool b) { return !(a ^ b); }
 };
+#endif

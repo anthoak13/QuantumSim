@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <random>
 #include <iostream>
+#include "Operator.h"
 
 using vecDouble = std::vector<double>;
 using vecBool = std::vector<bool>;
@@ -46,6 +47,9 @@ public:
     //returns the state in base 10 (5=>|011>, 7=>|111>, 2=>|010>) 
     int measure();
 
+    //Applys the passed operator to the register
+    void apply(Operator* O);
+    
     int getSize() { return N; }
 
 private:
