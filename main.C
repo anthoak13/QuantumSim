@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     QuantumRegister reg;
 
     //run tests
-    TestHelper::runTest(test1, reg, 10000);
+    TestHelper::runTest(test1, reg, 10, true);
    
     return 0;
 }
@@ -32,11 +32,4 @@ int main(int argc, char **argv)
 void test1(QuantumRegister& reg)
 {
     reg.prepareState(vecDouble{1,1,1,1,1,1,1,1});
-}
-void printState(const vecBool& state)
-{
-    std::cout << "|";
-    for(int i = 2; i>=0;i--)
-	std::cout << state[i];
-    std::cout << ">" << std::endl;
 }

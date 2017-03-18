@@ -45,9 +45,8 @@ public:
     //Measures the system w/o collapsing the wavefunction
     //returns the state in base 10 (5=>|011>, 7=>|111>, 2=>|010>) 
     int measure();
-    //returns the state and base 10 and populates the
-    //vector that is passed by reference.
-    int measure(vecBool& state);
+
+    int getSize() { return N; }
 
 private:
     //function to setup the rnd number generator and

@@ -4,7 +4,7 @@
 #include "TestHelper.h"
 
 void TestHelper::runTest(std::function<void(QuantumRegister&)> test,
-			 QuantumRegister& reg, int n)
+			 QuantumRegister& reg, int n, bool verbose)
 {
     test(reg);
 
@@ -23,8 +23,17 @@ void TestHelper::runTest(std::function<void(QuantumRegister&)> test,
 
 	//Actually record the measurement
 	results.at(r)++;
+
+	//if verbose print out state
+	if(verbose)
+	{
+	    std::cout << r << ":";
+	    printState(r, reg.getSize());
+	    std::cout << std::endl;
+	}
     }
 
+    //Print out a summary of the results
     printResults(results);
 }
 
@@ -38,6 +47,8 @@ void TestHelper::printResults(const vecInt& results)
 
     //Print out header
     std::cout << "State : Probability" << std::endl;
+
+    //Print out the summary of the results
     for(int i = 0; i < results.size(); i++)
     {
 	std::cout << i << ": " << results.at(i)/(double) totalM
@@ -45,3 +56,27 @@ void TestHelper::printResults(const vecInt& results)
     }
     
 }
+
+void TestHelper::printState(const vecBool& state)
+{
+    std::cout << "|";
+    for(int i = state.size() - 1; i>=0; i--)
+	std::cout << state[i];
+    std::cout << ">";
+}
+
+void TestHelper::printState(int state, int N)
+{
+    vecBool temp(N,0);
+
+    //get binary representation of state
+    for( int i = 0; i < N; i++)
+    {
+	temp.at(i) = (state & 1);
+	state >>= 1;
+    }
+
+    //actually print the state
+    printState(temp);
+}
+

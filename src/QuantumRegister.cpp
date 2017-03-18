@@ -81,7 +81,7 @@ int QuantumRegister::measure()
     return result;
 }
 
-int QuantumRegister::measure(vecBool& state)
+/*int QuantumRegister::measure(vecBool& state)
 {
     int result = measure();
     int temp = result;
@@ -90,9 +90,6 @@ int QuantumRegister::measure(vecBool& state)
     //format.
     for( int i = 0; i < N; i++)
     {
-	//std::cout << "Filling " << i << " with " <<
-	//    (temp & 1) << std::endl;
-
 	if(state.size() > i)
 	    state.at(i) = (temp & 1);
 	else
@@ -101,7 +98,7 @@ int QuantumRegister::measure(vecBool& state)
     }
 
     return result;
-}
+    }*/
 
 void QuantumRegister::collapse()
 {

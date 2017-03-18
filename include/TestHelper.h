@@ -12,17 +12,24 @@
 
 //typedef declerations
 using vecInt = std::vector<int>;
+using vecBool = std::vector<bool>;
 
 //Class definition
 class TestHelper
 {
 
 public:
-    //test is the test to run on the computer, n is the number
-    //of times to make measurements of the test.
+    //test: test to run on the quantum register,
+    //reg: the quantum register to perform test on,
+    //n: number of times to make measurements of the test,
+    //verbose: flag for printing out each state
     static void runTest(std::function<void (QuantumRegister&)> test,
-		 QuantumRegister& reg, int n = 1);
+			QuantumRegister& reg, int n = 1,
+			bool verbose = false);
 
+    static void printState(const vecBool& state);
+    static void printState(int state, int N);
+    
     //Runs test n times making a measurement after each
     //run. Differs from runTest in that runTest only executes
     //the test once and then makes numerous measurements
