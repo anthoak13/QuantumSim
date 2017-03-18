@@ -1,6 +1,9 @@
 #Temp files
 *~
 
+#sample text files
+*.txt
+
 #Header files
 Header
 Headers.sh

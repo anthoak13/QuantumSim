@@ -10,31 +10,25 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include "QuantumRegister.h"
-#include "TestHelper.h"
-#include "OHadamard.h"
+#ifndef OHADAMARD_H
+#define OHADAMARD_H
 
+//Class for Hadamard gate for 3 bit system
+#include <vector>
+#include <cmath>
+#include "Operator.h"
 
-//forward decl
-void printState(const vecBool& state);
-void test1(QuantumRegister& reg);
+using vecDouble = std::vector<double>;
 
-
-int main(int argc, char **argv)
+class OHadamard : public Operator
 {
-    QuantumRegister reg;
+public:
+     OHadamard(int qbit);
+     double at(int a, int b) override;
 
-    //run tests
-    TestHelper::runTest(test1, reg, 1000, false);
-    Operator* O = new OHadamard(1);
+private:
+     //vector to store the matrix operator
+     std::vector<vecDouble> O;
+};
 
-    std::cout << O->at(4,4) << std::endl;
-    
-    return 0;
-}
-
-void test1(QuantumRegister& reg)
-{
-    reg.prepareState(vecDouble{1,1,1,1,1,1,1,1});
-}
+#endif

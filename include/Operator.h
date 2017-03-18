@@ -10,31 +10,16 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include "QuantumRegister.h"
-#include "TestHelper.h"
-#include "OHadamard.h"
 
+//Abstract base class for all operators
 
-//forward decl
-void printState(const vecBool& state);
-void test1(QuantumRegister& reg);
-
-
-int main(int argc, char **argv)
+class Operator
 {
-    QuantumRegister reg;
+public:
+    virtual double at(int a, int b) =0;
 
-    //run tests
-    TestHelper::runTest(test1, reg, 1000, false);
-    Operator* O = new OHadamard(1);
-
-    std::cout << O->at(4,4) << std::endl;
-    
-    return 0;
-}
-
-void test1(QuantumRegister& reg)
-{
-    reg.prepareState(vecDouble{1,1,1,1,1,1,1,1});
-}
+private:
+    //Kronecker deltas with only 1/0 as options
+    //is just /delta_{1,b} = !(a xor b)
+    bool kDelta(bool a, bool b) { return !(a ^ b); }
+};
