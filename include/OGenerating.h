@@ -10,31 +10,32 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifndef OGENERATING_H
+#define OGENERATING_H
 
-//implimentation of Hadamard gate for a 3 bit system
+//Abstract class for generating a gate of size N
+#include <cmath>
+#include <iostream>
+#include <vector>
+#include "Operator.h"
 
-
-#include "OHadamard.h"
-
-OHadamard::OHadamard(ubyte qbit, ubyte N)
+class OGenerating : public Operator
 {
-    //Initialize the 2X2 operator
-    H =	{{1,1},
-	 {1,-1}};
-    for(auto&& vec : H)
-	for(auto&& elem : vec)
-	    elem *= 1/std::sqrt(2);
+protected:
+    //vector storing the small matrix operator (for one or more
+    //q-bit gate)
+    std::vector<vecDouble> H;
+    //boolean to tell if the operator has been constructed yet
+    bool constructed;
+    //qbit(s) the gate is applied to
+    std::vector<ubyte> qbit;
+    //Function that constructs the matrix if it hasn't been
+    //already
+    void construct();
     
-    //Set constructed to false
-    constructed = false;
+    //Kronecker deltas with only 1/0 as options
+    //is just /delta_{1,b} = !(a xor b)
+    bool notKDelta(bool a, bool b) { return (a ^ b); }
+};
 
-    this->N = N;
-    this->qbit.push_back(qbit);
-}
-
-double OHadamard::at(int a, int b)
-{
-    construct();
-    return O.at(a).at(b);
-}
-
+#endif

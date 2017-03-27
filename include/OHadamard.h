@@ -17,27 +17,15 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include "Operator.h"
+#include "OGenerating.h"
 
-class OHadamard : public Operator
+class OHadamard : public OGenerating
 {
 public:
     //qbit is the bit to be operated on, N is the size of
     //the register
     OHadamard(ubyte qbit, ubyte N);
     double at(int a, int b) override;
-
-private:
-     //vector storing the 2X2 matrix operator (for one q-bit)
-     std::vector<vecDouble> H;
-     //boolean to tell if the operator has been constructed yet
-     bool constructed;
-     //qbit the gate is applied to
-     ubyte qbit;
-
-     //Function that constructs the matrix if it hasn't been
-     //already
-     void construct();
 };
 
 #endif

@@ -29,9 +29,5 @@ protected:
     //vector to store the matrix operator
     std::vector<vecDouble> O;
 
-    
-    //Kronecker deltas with only 1/0 as options
-    //is just /delta_{1,b} = !(a xor b)
-    bool notKDelta(bool a, bool b) { return (a ^ b); }
 };
 #endif

@@ -1,5 +1,7 @@
 #Temp files
 *~
+*\#*
+*#*
 
 #sample text files
 *.txt
