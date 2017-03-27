@@ -14,6 +14,7 @@
 #include "QuantumRegister.h"
 #include "TestHelper.h"
 #include "OHadamard.h"
+#include "ONot.h"
 
 
 //forward decl
@@ -24,14 +25,14 @@ void test1(QuantumRegister& reg);
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg;
-    reg.prepareState(vecDouble{1,0,0,0,0,0,0,0});
+    QuantumRegister reg(3);
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
 
     //Create H_1 operator and apply it to reg
-    Operator* O = new OHadamard(3,reg.size());
+    Operator* O = new OHadamard(1,reg.size());
+    O = new ONot(2,3,reg.size());
     reg.apply(O);
     std::cout << "Applying H operator..." << std::endl;
 

@@ -11,7 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-//This class simulates and stores a 3-bit quantum register
+//This class simulates and stores a N-bit quantum register
 
 #ifndef QUANTUMREGISTER_H
 #define QUANTUMREGISTER_H
@@ -31,10 +31,7 @@ class QuantumRegister
 {
 public:
     //Default constucor. Prepares the system in the |0> state.
-    QuantumRegister();
-    //Constructor that prepares the system in the |state> state.
-    QuantumRegister(const vecDouble& state);
-    QuantumRegister(const vecBool& state);
+    QuantumRegister(const ubyte Nin);
     
     //Sets the state of the system to |state>.
     void prepareState(const vecDouble& state);
@@ -57,7 +54,7 @@ private:
     //register
     void init();
     
-    const ubyte N = 3;
+    const ubyte N;
     vecDouble reg;
 
     //classes for rnd number generator

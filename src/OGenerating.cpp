@@ -17,6 +17,13 @@
 
 #include "OGenerating.h"
 
+
+double OGenerating::at(int a, int b)
+{
+    construct();
+    return O.at(a).at(b);
+}
+
 void OGenerating::construct()
 {
     //if the operator has already been created, skip
@@ -30,15 +37,17 @@ void OGenerating::construct()
     //locOfBit is the bit that determines
     //the H matrix.
     //ie for H^(1) locOfBit is 2^2.
-    uint locOfBit = 1;
+    uint locOfBit = 0;
     for(int i = 0; i < qbit.size(); i++)
-	locOfBit <<= (N - qbit.at(i));
+	locOfBit |= 1 << (N - qbit.at(i));
     
+
     //Loop through each row of the matrix
     for(uint i = 0; i < size; i++)
     {
 	//Add a blank vector representing the row
 	O.push_back(vecDouble{});
+
 	//Loop through each column
 	//(i,j) are matrix element being calculated
 	for(uint j = 0; j < size; j++)
@@ -51,15 +60,43 @@ void OGenerating::construct()
 	    for(uint k = 1;!zero && k < size; k <<= 1)
 	    {
 		//if k is locOfBit then skip, it isn't a delta
-		if(k != locOfBit)
+		if(!(k & locOfBit))
 		    zero |= notKDelta(i & k, j & k);
 	    }
 
 	    //double negation fixes the result at 1 or 0,
 	    //otherwise you can get any power of 2 (4 & 4 = 4).
-	    O.at(i).push_back(zero ? 0 :
-			      H.at(!!(i & locOfBit))
-			      .at(!!(j & locOfBit)));
+	    if(zero)
+		O.at(i).push_back(0);
+	    else
+	    {
+		//Loop to calulate indices
+		//std::cout << "Filling (" << i << "," << j << ") ";
+
+
+		//i' and j' are the indices to pull the value from
+		//H.
+		uint iPrime = 0;
+		uint jPrime = 0;
+
+		//This calculates the indices
+		for(uint k = 0; k < qbit.size(); k++)
+		{
+		    iPrime +=
+			( !!(i & (1 << N-qbit.at(k))))
+			<< (qbit.size() - 1 - k);
+		    jPrime +=
+			( !!(j & (1 << N-qbit.at(k))))
+			<< (qbit.size() - 1 - k);
+		}
+		
+		//std::cout << "jPrime = " << jPrime <<
+		//    " iPrime = " << iPrime << std::endl;
+
+		//Push back the proper term
+		O.at(i).push_back(H.at(iPrime)
+				  .at(jPrime));
+	    }
 	}
     }
 
@@ -67,10 +104,10 @@ void OGenerating::construct()
 
     
     //print out the operator
-/*    for(auto&& vec : O)
+    /*for(auto&& vec : O)
     {
 	for(auto elem : vec)
 	    std::cout << elem << " ";
 	std::cout << std::endl;
-	}*/
+    }*/
 }

@@ -11,7 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-//implimentation of Hadamard gate for a 3 bit system
+//implimentation of Hadamard gate for an N bit system
 
 
 #include "OHadamard.h"
@@ -32,9 +32,4 @@ OHadamard::OHadamard(ubyte qbit, ubyte N)
     this->qbit.push_back(qbit);
 }
 
-double OHadamard::at(int a, int b)
-{
-    construct();
-    return O.at(a).at(b);
-}
 

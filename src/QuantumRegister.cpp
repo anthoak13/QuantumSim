@@ -13,21 +13,10 @@
 
 #include "QuantumRegister.h"
 
-QuantumRegister::QuantumRegister()
+QuantumRegister::QuantumRegister(const ubyte Nin) :
+    N(Nin) 
 {
     init();
-}
-
-QuantumRegister::QuantumRegister(const vecBool& state)
-{
-    init();
-    prepareState(state);
-}
-
-QuantumRegister::QuantumRegister(const vecDouble& state)
-{
-    init();
-    prepareState(state);
 }
 
 void QuantumRegister::prepareState(const vecDouble& state)
@@ -45,7 +34,6 @@ void QuantumRegister::prepareState(const vecDouble& state)
 	reg.at(i) = mag * state.at(i);
     }
 }
-
 void QuantumRegister::prepareState(const vecBool& state)
 {
     for(int i = 0; i < reg.size(); i++)

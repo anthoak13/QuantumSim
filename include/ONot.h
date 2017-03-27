@@ -10,35 +10,23 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef OGENERATING_H
-#define OGENERATING_H
+#ifndef ONOT_H
+#define ONOT_H
 
-//Abstract class for generating a gate of size N
+//Class for Hadamard gate for 3 bit system
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include "Operator.h"
+#include "OGenerating.h"
 
-class OGenerating : public Operator
+class ONot : public OGenerating
 {
 public:
-    double at(int a, int b) override;
-    
-protected:
-    //vector storing the small matrix operator (for one or more
-    //q-bit gate)
-    std::vector<vecDouble> H;
-    //boolean to tell if the operator has been constructed yet
-    bool constructed;
-    //qbit(s) the gate is applied to
-    std::vector<ubyte> qbit;
-    //Function that constructs the matrix if it hasn't been
-    //already
-    void construct();
-    
-    //Kronecker deltas with only 1/0 as options
-    //is just /delta_{1,b} = !(a xor b)
-    bool notKDelta(bool a, bool b) { return (a ^ b); }
+    //controlBit is the bit to control on,
+    //notBit is the bit to flip,
+    //N is the size of the register
+    ONot(ubyte controlBit, ubyte notBit, ubyte N);
+
 };
 
 #endif

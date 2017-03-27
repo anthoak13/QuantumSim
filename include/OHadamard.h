@@ -25,7 +25,7 @@ public:
     //qbit is the bit to be operated on, N is the size of
     //the register
     OHadamard(ubyte qbit, ubyte N);
-    double at(int a, int b) override;
+
 };
 
 #endif
