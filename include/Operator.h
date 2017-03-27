@@ -15,14 +15,23 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
+using ubyte = unsigned char;
+using vecDouble = std::vector<double>;
+
 class Operator
 {
 public:
     virtual double at(int a, int b) =0;
 
-private:
+protected:
+    //The size of the register this gate can be applied to
+    ubyte N;
+    //vector to store the matrix operator
+    std::vector<vecDouble> O;
+
+    
     //Kronecker deltas with only 1/0 as options
     //is just /delta_{1,b} = !(a xor b)
-    bool kDelta(bool a, bool b) { return !(a ^ b); }
+    bool notKDelta(bool a, bool b) { return (a ^ b); }
 };
 #endif

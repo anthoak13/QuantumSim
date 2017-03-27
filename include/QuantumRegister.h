@@ -50,7 +50,7 @@ public:
     //Applys the passed operator to the register
     void apply(Operator* O);
     
-    int getSize() { return N; }
+    int size() { return N; }
 
 private:
     //function to setup the rnd number generator and

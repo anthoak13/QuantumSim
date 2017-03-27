@@ -14,21 +14,30 @@
 #define OHADAMARD_H
 
 //Class for Hadamard gate for 3 bit system
-#include <vector>
 #include <cmath>
+#include <iostream>
+#include <vector>
 #include "Operator.h"
-
-using vecDouble = std::vector<double>;
 
 class OHadamard : public Operator
 {
 public:
-     OHadamard(int qbit);
-     double at(int a, int b) override;
+    //qbit is the bit to be operated on, N is the size of
+    //the register
+    OHadamard(ubyte qbit, ubyte N);
+    double at(int a, int b) override;
 
 private:
-     //vector to store the matrix operator
-     std::vector<vecDouble> O;
+     //vector storing the 2X2 matrix operator (for one q-bit)
+     std::vector<vecDouble> H;
+     //boolean to tell if the operator has been constructed yet
+     bool constructed;
+     //qbit the gate is applied to
+     ubyte qbit;
+
+     //Function that constructs the matrix if it hasn't been
+     //already
+     void construct();
 };
 
 #endif

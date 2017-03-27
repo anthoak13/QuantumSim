@@ -40,7 +40,7 @@ void TestHelper::runTest(std::function<void(QuantumRegister&)> test,
 	if(verbose)
 	{
 	    std::cout << r << ":";
-	    printState(r, reg.getSize());
+	    printState(r, reg.size());
 	    std::cout << std::endl;
 	}
     }

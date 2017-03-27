@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     TestHelper::runTest(test1, reg, 1000, false);
 
     //Create H_1 operator and apply it to reg
-    Operator* O = new OHadamard(3);
+    Operator* O = new OHadamard(1,reg.size());
     reg.apply(O);
     std::cout << "Applying H operator..." << std::endl;
 
