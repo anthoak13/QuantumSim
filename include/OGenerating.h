@@ -27,7 +27,7 @@ public:
 protected:
     //vector storing the small matrix operator (for one or more
     //q-bit gate)
-    std::vector<vecDouble> H;
+    std::vector<vecDouble> U;
     //boolean to tell if the operator has been constructed yet
     bool constructed;
     //qbit(s) the gate is applied to

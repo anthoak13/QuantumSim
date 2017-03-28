@@ -11,19 +11,25 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include "ONot.h"
+//implimentation for the N-bit J operator
 
+#include "OJGrover.h"
 
-ONot::ONot(ubyte controlBit, ubyte notBit, ubyte N)
+OJGrover::OJGrover(ubyte N)
 {
-    U = {{1, 0, 0, 0},
-	 {0, 1, 0, 0},
-	 {0, 0, 0, 1},
-	 {0, 0, 1, 0}};
-
-    constructed = false;
-
     this->N = N;
-    qbit.push_back(controlBit);
-    qbit.push_back(notBit);
+    for(uint i = 0; i < this->size(); i++)
+    {
+	O.push_back(vecDouble{});
+	for(uint j = 0; j < this->size(); j++)
+	    if(j == i)
+		O.at(i).push_back( i == 0 ? -1 : 1);
+	    else
+		O.at(i).push_back(0);
+    }
+}
+
+double OJGrover::at(int a, int b)
+{
+    return O.at(a).at(b);
 }

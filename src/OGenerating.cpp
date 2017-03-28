@@ -73,7 +73,6 @@ void OGenerating::construct()
 		//Loop to calulate indices
 		//std::cout << "Filling (" << i << "," << j << ") ";
 
-
 		//i' and j' are the indices to pull the value from
 		//H.
 		uint iPrime = 0;
@@ -94,7 +93,7 @@ void OGenerating::construct()
 		//    " iPrime = " << iPrime << std::endl;
 
 		//Push back the proper term
-		O.at(i).push_back(H.at(iPrime)
+		O.at(i).push_back(U.at(iPrime)
 				  .at(jPrime));
 	    }
 	}

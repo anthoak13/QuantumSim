@@ -11,19 +11,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include "ONot.h"
 
+#ifndef OORACLE_H
+#define OORACLE_H
 
-ONot::ONot(ubyte controlBit, ubyte notBit, ubyte N)
+//Class that implements the oracle for grover's algorithm
+#include "Operator.h"
+
+class OOracle : public Operator
 {
-    U = {{1, 0, 0, 0},
-	 {0, 1, 0, 0},
-	 {0, 0, 0, 1},
-	 {0, 0, 1, 0}};
+public:
+    OOracle(uint answer, ubyte N);
+    
+    double at(int a, int b) override;
+};
 
-    constructed = false;
-
-    this->N = N;
-    qbit.push_back(controlBit);
-    qbit.push_back(notBit);
-}
+#endif

@@ -19,9 +19,9 @@
 OHadamard::OHadamard(ubyte qbit, ubyte N)
 {
     //Initialize the 2X2 operator
-    H =	{{1,1},
+    U =	{{1,1},
 	 {1,-1}};
-    for(auto&& vec : H)
+    for(auto&& vec : U)
 	for(auto&& elem : vec)
 	    elem *= 1/std::sqrt(2);
     

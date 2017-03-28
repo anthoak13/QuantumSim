@@ -15,7 +15,8 @@
 #include "TestHelper.h"
 #include "OHadamard.h"
 #include "ONot.h"
-
+#include "OOracle.h"
+#include "OJGrover.h"
 
 //forward decl
 void printState(const vecBool& state);
@@ -32,7 +33,6 @@ int main(int argc, char **argv)
 
     //Create H_1 operator and apply it to reg
     Operator* O = new OHadamard(1,reg.size());
-    O = new ONot(2,3,reg.size());
     reg.apply(O);
     std::cout << "Applying H operator..." << std::endl;
 
@@ -44,6 +44,7 @@ int main(int argc, char **argv)
 
     //rerun the test, should return to |000> state
     TestHelper::runTest(test1, reg, 1000, false);
+
     return 0;
 }
 

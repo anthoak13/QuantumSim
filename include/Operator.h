@@ -15,6 +15,9 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
+#include <iostream>
+#include <vector>
+
 using ubyte = unsigned char;
 using vecDouble = std::vector<double>;
 
@@ -22,7 +25,15 @@ class Operator
 {
 public:
     virtual double at(int a, int b) =0;
-
+    uint size() {return 1 << N;};
+    void print() {
+	for(auto&& vec : O)
+	{
+	    for(auto&& elem : vec)
+		std::cout << elem << " ";
+	    std::cout << std::endl;
+	}
+    };
 protected:
     //The size of the register this gate can be applied to
     ubyte N;

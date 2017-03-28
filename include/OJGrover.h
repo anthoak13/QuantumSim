@@ -11,19 +11,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include "ONot.h"
 
+#ifndef OJGROVER_H
+#define OJGROVER_H
 
-ONot::ONot(ubyte controlBit, ubyte notBit, ubyte N)
+//definition of J operator for grover's algorithm
+#include "Operator.h"
+
+class OJGrover : public Operator
 {
-    U = {{1, 0, 0, 0},
-	 {0, 1, 0, 0},
-	 {0, 0, 0, 1},
-	 {0, 0, 1, 0}};
+public:
+    OJGrover(ubyte N);
 
-    constructed = false;
+    double at(int a, int b) override;
+};
 
-    this->N = N;
-    qbit.push_back(controlBit);
-    qbit.push_back(notBit);
-}
+
+
+#endif

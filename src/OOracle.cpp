@@ -11,19 +11,26 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#include "ONot.h"
 
+//implimentation for the N-bit oracle operator
 
-ONot::ONot(ubyte controlBit, ubyte notBit, ubyte N)
+#include "OOracle.h"
+
+OOracle::OOracle(uint answer, ubyte N)
 {
-    U = {{1, 0, 0, 0},
-	 {0, 1, 0, 0},
-	 {0, 0, 0, 1},
-	 {0, 0, 1, 0}};
-
-    constructed = false;
-
     this->N = N;
-    qbit.push_back(controlBit);
-    qbit.push_back(notBit);
+    for(uint i = 0; i < this->size(); i++)
+    {
+	O.push_back(vecDouble{});
+	for(uint j = 0; j < this->size(); j++)
+	    if(j == i)
+		O.at(i).push_back( j == answer ? -1 : 1);
+	    else
+		O.at(i).push_back(0);
+    }
+}
+
+double OOracle::at(int a, int b)
+{
+    return O.at(a).at(b);
 }
