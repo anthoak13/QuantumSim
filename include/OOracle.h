@@ -23,7 +23,7 @@ class OOracle : public Operator
 public:
     OOracle(uint answer, ubyte N);
     
-    double at(int a, int b) override;
+    complex at(int a, int b) override;
 };
 
 #endif

@@ -23,7 +23,7 @@ class OJGrover : public Operator
 public:
     OJGrover(ubyte N);
 
-    double at(int a, int b) override;
+    complex at(int a, int b) override;
 };
 
 

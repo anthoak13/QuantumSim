@@ -21,7 +21,7 @@ OOracle::OOracle(uint answer, ubyte N)
     this->N = N;
     for(uint i = 0; i < this->size(); i++)
     {
-	O.push_back(vecDouble{});
+	O.push_back(vecComplex{});
 	for(uint j = 0; j < this->size(); j++)
 	    if(j == i)
 		O.at(i).push_back( j == answer ? -1 : 1);
@@ -30,7 +30,7 @@ OOracle::OOracle(uint answer, ubyte N)
     }
 }
 
-double OOracle::at(int a, int b)
+complex OOracle::at(int a, int b)
 {
     return O.at(a).at(b);
 }

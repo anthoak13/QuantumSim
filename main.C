@@ -26,13 +26,13 @@ void test1(QuantumRegister& reg);
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(3);
+    QuantumRegister reg(4);
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
 
     //Create H_1 operator and apply it to reg
-    Operator* O = new OHadamard(1,reg.size());
+    Operator* O = new OHadamard(4,reg.size());
     reg.apply(O);
     std::cout << "Applying H operator..." << std::endl;
 

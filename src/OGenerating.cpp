@@ -18,7 +18,7 @@
 #include "OGenerating.h"
 
 
-double OGenerating::at(int a, int b)
+complex OGenerating::at(int a, int b)
 {
     construct();
     return O.at(a).at(b);
@@ -38,7 +38,7 @@ void OGenerating::construct()
     //the H matrix.
     //ie for H^(1) locOfBit is 2^2.
     uint locOfBit = 0;
-    for(int i = 0; i < qbit.size(); i++)
+    for(uint i = 0; i < qbit.size(); i++)
 	locOfBit |= 1 << (N - qbit.at(i));
     
 
@@ -46,7 +46,7 @@ void OGenerating::construct()
     for(uint i = 0; i < size; i++)
     {
 	//Add a blank vector representing the row
-	O.push_back(vecDouble{});
+	O.push_back(vecComplex{});
 
 	//Loop through each column
 	//(i,j) are matrix element being calculated

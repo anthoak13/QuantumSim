@@ -14,6 +14,7 @@
 #define OGENERATING_H
 
 //Abstract class for generating a gate of size N
+#include <complex>
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -22,12 +23,12 @@
 class OGenerating : public Operator
 {
 public:
-    double at(int a, int b) override;
+    complex at(int a, int b) override;
     
 protected:
     //vector storing the small matrix operator (for one or more
     //q-bit gate)
-    std::vector<vecDouble> U;
+    std::vector<vecComplex> U;
     //boolean to tell if the operator has been constructed yet
     bool constructed;
     //qbit(s) the gate is applied to

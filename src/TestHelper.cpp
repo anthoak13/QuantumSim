@@ -18,17 +18,19 @@
 void TestHelper::runTest(std::function<void(QuantumRegister&)> test,
 			 QuantumRegister& reg, int n, bool verbose)
 {
+    //run the test
     test(reg);
 
     //Create vector to store the number of times
     //each state is measured
-    vecInt results;
+    vecUint results;
     
-    //make n measurements and record t
+    //make n measurements and record the number of times
+    //each result occurs
     for(int i = 0; i < n; i++)
     {
 	//make measurement
-	int r = reg.measure();
+	uint r = reg.measure();
 	//make sure array is large enough to store the measurement
 	while( results.size() <= r)
 	    results.push_back(0);
@@ -46,10 +48,10 @@ void TestHelper::runTest(std::function<void(QuantumRegister&)> test,
     }
 
     //Print out a summary of the results
-    printResults(results);
+    printResults(results, reg.size());
 }
 
-void TestHelper::printResults(const vecInt& results)
+void TestHelper::printResults(const vecUint& results, const ubyte N)
 {
     //figure out the total number of measurements
     //performed
@@ -61,12 +63,12 @@ void TestHelper::printResults(const vecInt& results)
     std::cout << "State : Probability" << std::endl;
 
     //Print out the summary of the results
-    for(int i = 0; i < results.size(); i++)
+    for(uint i = 0; i < results.size(); i++)
     {
 	if(results.at(i) == 0)
 	    continue;
 	
-	printState(i, 3);
+	printState(i, N);
 	std::cout << ": " << results.at(i)/(double) totalM
 		  << std::endl;
     }
@@ -81,7 +83,7 @@ void TestHelper::printState(const vecBool& state)
     std::cout << ">";
 }
 
-void TestHelper::printState(int state, int N)
+void TestHelper::printState(uint state, ubyte N)
 {
     vecBool temp(N,0);
 

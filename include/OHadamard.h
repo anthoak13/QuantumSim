@@ -13,10 +13,8 @@
 #ifndef OHADAMARD_H
 #define OHADAMARD_H
 
-//Class for Hadamard gate for 3 bit system
+//Class for Hadamard gate for N bit system
 #include <cmath>
-#include <iostream>
-#include <vector>
 #include "OGenerating.h"
 
 class OHadamard : public OGenerating

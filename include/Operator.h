@@ -15,16 +15,18 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
+#include <complex>
 #include <iostream>
 #include <vector>
 
 using ubyte = unsigned char;
-using vecDouble = std::vector<double>;
+using complex = std::complex<double>;
+using vecComplex = std::vector<complex>;
 
 class Operator
 {
 public:
-    virtual double at(int a, int b) =0;
+    virtual complex at(int a, int b) =0;
     uint size() {return 1 << N;};
     void print() {
 	for(auto&& vec : O)
@@ -38,7 +40,7 @@ protected:
     //The size of the register this gate can be applied to
     ubyte N;
     //vector to store the matrix operator
-    std::vector<vecDouble> O;
+    std::vector<vecComplex> O;
 
 };
 #endif

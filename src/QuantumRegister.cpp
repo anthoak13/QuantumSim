@@ -19,13 +19,13 @@ QuantumRegister::QuantumRegister(const ubyte Nin) :
     init();
 }
 
-void QuantumRegister::prepareState(const vecDouble& state)
+void QuantumRegister::prepareState(const vecComplex& state)
 {
     //Check if state is normalized, and if it isn't calculate
     //normalization parameter to adjust the state.
     double mag = 0;
-    for(double elem : state)
-	mag += elem * elem;
+    for(auto&& elem : state)
+	mag += std::abs(elem) * std::abs(elem);
     if(mag != 1)
 	mag = 1/std::sqrt(mag);
     
@@ -34,15 +34,15 @@ void QuantumRegister::prepareState(const vecDouble& state)
 	reg.at(i) = mag * state.at(i);
     }
 }
-void QuantumRegister::prepareState(const vecBool& state)
+void QuantumRegister::prepareState(const uint state)
 {
-    for(int i = 0; i < reg.size(); i++)
-	reg.at(i) = state.at(i);
+    for(uint i = 0; i < reg.size(); i++)
+	reg.at(i) = (i == state);
 }
 
-int QuantumRegister::measure()
+uint QuantumRegister::measure()
 {
-    int result = 0;
+    uint result = 0;
 
     //Get a randum number between 0 and 1;
     double r = dist(rnd);
@@ -57,7 +57,7 @@ int QuantumRegister::measure()
     //state is valid.
     for(result = 0; result < reg.size(); result++)
     {
-	double prob = reg.at(result) * reg.at(result);
+	double prob = std::pow(std::abs(reg.at(result)),2);
 	q += prob;
 	//std::cout << "state,prob,reg:" << result << " "
 	//	  << prob << " "<< reg.at(result)
@@ -90,9 +90,9 @@ int QuantumRegister::measure()
 
 void QuantumRegister::collapse()
 {
-    int result = measure();
-    for(int i = 0; i < reg.size(); i++)
-	reg.at(i) = ( i == result) ? 1 : 0;
+    uint result = measure();
+    for(uint i = 0; i < reg.size(); i++)
+	reg.at(i) = (i == result);
 }
 
 void QuantumRegister::apply(Operator* O)
@@ -100,10 +100,10 @@ void QuantumRegister::apply(Operator* O)
     auto temp = reg;
 
     //usig new_i = O_{i,j}old_j
-    for(int i = 0; i < reg.size(); i++)
+    for(uint i = 0; i < reg.size(); i++)
     {
 	reg.at(i) = 0;
-	for(int j = 0; j < reg.size(); j++)
+	for(uint j = 0; j < reg.size(); j++)
 	    reg.at(i) += O->at(i,j)*temp.at(j);
     }
 }
@@ -113,7 +113,7 @@ void QuantumRegister::init()
 {
     rnd = std::mt19937_64{rd()};
     dist = std::uniform_real_distribution<>(0,1);
-    reg = vecDouble(std::pow(2,N),0);
+    reg = vecComplex(std::pow(2,N),0);
     reg[0] = 1;
 }
 

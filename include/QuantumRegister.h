@@ -17,15 +17,18 @@
 #define QUANTUMREGISTER_H
 
 
-#include <vector>
+
 #include <algorithm>
-#include <random>
+#include <complex>
 #include <iostream>
+#include <random>
+#include <vector>
 #include "Operator.h"
 
-using vecDouble = std::vector<double>;
-using vecBool = std::vector<bool>;
+using complex = std::complex<double>;
+using vecComplex = std::vector<complex>;
 using ubyte = unsigned char;
+using uint = unsigned int;
 
 class QuantumRegister
 {
@@ -34,15 +37,15 @@ public:
     QuantumRegister(const ubyte Nin);
     
     //Sets the state of the system to |state>.
-    void prepareState(const vecDouble& state);
-    void prepareState(const vecBool& state);
+    void prepareState(const vecComplex& state);
+    void prepareState(const uint state);
 
     //Collapses the wavefunction
     void collapse();
 
     //Measures the system w/o collapsing the wavefunction
     //returns the state in base 10 (5=>|011>, 7=>|111>, 2=>|010>) 
-    int measure();
+    uint measure();
 
     //Applys the passed operator to the register
     void apply(Operator* O);
@@ -55,7 +58,7 @@ private:
     void init();
     
     const ubyte N;
-    vecDouble reg;
+    vecComplex reg;
 
     //classes for rnd number generator
     std::random_device rd;
