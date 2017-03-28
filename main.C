@@ -17,10 +17,12 @@
 #include "ONot.h"
 #include "OOracle.h"
 #include "OJGrover.h"
+#include "OPhaseShift.h"
 
 //forward decl
 void printState(const vecBool& state);
 void test1(QuantumRegister& reg);
+const double PI  =3.141592653589793238463;
 
 
 int main(int argc, char **argv)
@@ -44,6 +46,9 @@ int main(int argc, char **argv)
 
     //rerun the test, should return to |000> state
     TestHelper::runTest(test1, reg, 1000, false);
+
+    Operator* R = new OPhaseShift(PI, 3, 3);
+    R->print();
 
     return 0;
 }

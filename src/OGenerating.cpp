@@ -17,7 +17,16 @@
 
 #include "OGenerating.h"
 
-
+void OGenerating::print()
+{
+    construct();
+    for(auto&& vec : O)
+    {
+	for(auto&& elem : vec)
+	    std::cout << elem << " ";
+	std::cout << std::endl;
+    }
+}
 complex OGenerating::at(int a, int b)
 {
     construct();

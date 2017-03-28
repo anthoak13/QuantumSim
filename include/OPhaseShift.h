@@ -10,37 +10,20 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef OGENERATING_H
-#define OGENERATING_H
+#ifndef OPHASESHIFT_H
+#define OPHASESHIFT_H
 
-//Abstract class for generating a gate of size N
-#include <complex>
+//Class for Hadamard gate for N bit system
 #include <cmath>
-#include <iostream>
-#include <vector>
-#include "Operator.h"
+#include "OGenerating.h"
 
-class OGenerating : public Operator
+class OPhaseShift : public OGenerating
 {
 public:
-    complex at(int a, int b) override;
-    void print() override;
-    
-protected:
-    //vector storing the small matrix operator (for one or more
-    //q-bit gate)
-    std::vector<vecComplex> U;
-    //boolean to tell if the operator has been constructed yet
-    bool constructed;
-    //qbit(s) the gate is applied to
-    std::vector<ubyte> qbit;
-    //Function that constructs the matrix if it hasn't been
-    //already
-    void construct();
-    
-    //Kronecker deltas with only 1/0 as options
-    //is just /delta_{1,b} = !(a xor b)
-    bool notKDelta(bool a, bool b) { return (a ^ b); }
+    //qbit is the bit to be operated on, N is the size of
+    //the register
+    OPhaseShift(double theta, ubyte qbit, ubyte N);
+
 };
 
 #endif

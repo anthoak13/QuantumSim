@@ -10,37 +10,24 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef OGENERATING_H
-#define OGENERATING_H
 
-//Abstract class for generating a gate of size N
-#include <complex>
-#include <cmath>
-#include <iostream>
-#include <vector>
-#include "Operator.h"
+//implimentation of phase shift gate for an N bit system
 
-class OGenerating : public Operator
+
+#include "OPhaseShift.h"
+
+OPhaseShift::OPhaseShift(double theta, ubyte qbit, ubyte N)
 {
-public:
-    complex at(int a, int b) override;
-    void print() override;
-    
-protected:
-    //vector storing the small matrix operator (for one or more
-    //q-bit gate)
-    std::vector<vecComplex> U;
-    //boolean to tell if the operator has been constructed yet
-    bool constructed;
-    //qbit(s) the gate is applied to
-    std::vector<ubyte> qbit;
-    //Function that constructs the matrix if it hasn't been
-    //already
-    void construct();
-    
-    //Kronecker deltas with only 1/0 as options
-    //is just /delta_{1,b} = !(a xor b)
-    bool notKDelta(bool a, bool b) { return (a ^ b); }
-};
+    complex i(0,1);
+    //Initialize the 2X2 operator
+    U =	{{1,0},
+	 {0,std::exp(i*theta)}};
 
-#endif
+    //Set constructed to false
+    constructed = false;
+
+    this->N = N;
+    this->qbit.push_back(qbit);
+}
+
+
