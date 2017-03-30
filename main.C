@@ -13,11 +13,7 @@
 #include <iostream>
 #include "QuantumRegister.h"
 #include "TestHelper.h"
-#include "OHadamard.h"
-#include "ONot.h"
-#include "OOracle.h"
-#include "OJGrover.h"
-#include "OPhaseShift.h"
+#include "Operators.h"
 
 //forward decl
 void printState(const vecBool& state);
