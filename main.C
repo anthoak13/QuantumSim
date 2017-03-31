@@ -10,22 +10,27 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <chrono>
 #include <iostream>
 #include "QuantumRegister.h"
 #include "TestHelper.h"
 #include "Operators.h"
 
+
 //forward decl
 void printState(const vecBool& state);
 void GroverAlg(QuantumRegister& reg);
 void test1(QuantumRegister& reg);
+
 const double PI  =3.141592653589793238463;
+
+using Clock = std::chrono::high_resolution_clock;
 using uint = unsigned int;
 
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(7);
+    QuantumRegister reg(10);
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
@@ -38,13 +43,15 @@ int main(int argc, char **argv)
 
 void GroverAlg(QuantumRegister& reg)
 {
+    
     const ubyte N = reg.size();
     const uint soln = (1 << 6) + 1;
     uint numRep = std::floor(PI/4*std::sqrt(1 << N));
     numRep += 0;
     std::cout << "Running Grover's " << numRep << " times."
 	      << std::endl;
-
+    
+    auto start = Clock::now();
     //Create operators
     std::vector<Operator*> HOpps;
     for(int i = 0; i < N; i++)
@@ -75,6 +82,11 @@ void GroverAlg(QuantumRegister& reg)
 	for(int i = 0; i < N; i++)
 	    reg.apply(HOpps.at(i));
     }
+
+    auto stop = Clock::now();
+    std::cout << "Algorithm took "<<
+	std::chrono::duration_cast<std::chrono::milliseconds>(
+	    stop - start).count() << " ms" << std::endl;
 }
 void test1(QuantumRegister& reg)
 {
