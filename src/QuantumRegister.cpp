@@ -100,6 +100,7 @@ void QuantumRegister::apply(Operator* O)
     auto temp = reg;
 
     //usig new_i = O_{i,j}old_j
+    //std::cout << "Reg size is " << reg.size() << std::endl;
     for(uint i = 0; i < reg.size(); i++)
     {
 	reg.at(i) = 0;

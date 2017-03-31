@@ -17,38 +17,65 @@
 
 //forward decl
 void printState(const vecBool& state);
+void GroverAlg(QuantumRegister& reg);
 void test1(QuantumRegister& reg);
 const double PI  =3.141592653589793238463;
-
+using uint = unsigned int;
 
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(4);
+    QuantumRegister reg(7);
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
 
-    //Create H_1 operator and apply it to reg
-    Operator* O = new OHadamard(4,reg.size());
-    reg.apply(O);
-    std::cout << "Applying H operator..." << std::endl;
-
     //re-run the test, should be 50/50 |000>/|100>
-    TestHelper::runTest(test1, reg, 1000, false);
-
-    reg.apply(O);
-    std::cout << "Applying H operator..." << std::endl;
-
-    //rerun the test, should return to |000> state
-    TestHelper::runTest(test1, reg, 1000, false);
-
-    Operator* R = new OPhaseShift(PI, 3, 3);
-    R->print();
+    TestHelper::runTest(GroverAlg, reg, 1000, false);
 
     return 0;
 }
 
+void GroverAlg(QuantumRegister& reg)
+{
+    const ubyte N = reg.size();
+    const uint soln = (1 << 6) + 1;
+    uint numRep = std::floor(PI/4*std::sqrt(1 << N));
+    numRep += 0;
+    std::cout << "Running Grover's " << numRep << " times."
+	      << std::endl;
+
+    //Create operators
+    std::vector<Operator*> HOpps;
+    for(int i = 0; i < N; i++)
+	HOpps.push_back(new OHadamard(i+1,N));
+
+    //2 is the correct answer
+    Operator* Oracle = new OOracle(soln,N);
+    Operator* J = new OJGrover(N);
+
+    //Setup the system in a complete mixed state
+    for(int i = 0; i < N; i++)
+	reg.apply(HOpps.at(i));
+
+    //Repeat grover's numRep times
+    for(uint i = 0; i < numRep; i++)
+    {
+	//apply the oracale opp
+	reg.apply(Oracle);
+
+	//Apply all of the Hadamard gates
+	for(int i = 0; i < N; i++)
+	    reg.apply(HOpps.at(i));
+
+	//Apply diffusion operator
+	reg.apply(J);
+
+	//Apply Hadamard gates again
+	for(int i = 0; i < N; i++)
+	    reg.apply(HOpps.at(i));
+    }
+}
 void test1(QuantumRegister& reg)
 {
 

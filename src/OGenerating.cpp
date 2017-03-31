@@ -38,7 +38,8 @@ void OGenerating::construct()
     //if the operator has already been created, skip
     if(constructed)
 	return;
-    std::cout << "Constructing the operator..." << std::endl;
+    std::cout << "Constructing the operator " << (int)qbit.at(0)
+	      << "..." << std::endl;
 
     //The matrix is a 2^N square matrix
     uint size = 1 << N;
@@ -104,13 +105,13 @@ void OGenerating::construct()
 		//Push back the proper term
 		O.at(i).push_back(U.at(iPrime)
 				  .at(jPrime));
-	    }
-	}
-    }
+	    } //end else statement
+	} //Endl loop thorugh j
+    } //end loop though i
 
     constructed = true;
 
-    
+    //std::cout << "Finish construciton";
     //print out the operator
     /*for(auto&& vec : O)
     {

@@ -18,18 +18,11 @@
 OJGrover::OJGrover(ubyte N)
 {
     this->N = N;
-    for(uint i = 0; i < this->size(); i++)
-    {
-	O.push_back(vecComplex{});
-	for(uint j = 0; j < this->size(); j++)
-	    if(j == i)
-		O.at(i).push_back( i == 0 ? -1 : 1);
-	    else
-		O.at(i).push_back(0);
-    }
 }
 
 complex OJGrover::at(int a, int b)
 {
-    return O.at(a).at(b);
+    if( a == b)
+	return a == 0 ? -1 : 1;
+    return 0;
 }
