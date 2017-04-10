@@ -10,40 +10,34 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef OGENERATING_H
-#define OGENERATING_H
+#ifndef OFGATE_H
+#define OFGATE_H
 
-//Abstract class for generating a gate of size N
-#include <complex>
+//Class for Hadamard gate for N bit system
 #include <cmath>
-#include <iostream>
-#include <vector>
 #include "Operator.h"
+#include "QuantumRegister.h"
 
-class OGenerating : public Operator
+class OfGate : public Operator
 {
 public:
-    complex at(int a, int b) override;
-    void print() override;
+    //qbit is the bit to be operated on, N is the size of
+    //the register
+    OfGate(uint numToFactor, ubyte numL, ubyte numM,
+	   uint a, ubyte controlbit);
 
-    //Function that constructs the matrix if it hasn't been
-    //already
-    virtual void construct();
-protected:
-    //vector storing the small matrix operator (for one or more
-    //q-bit gate)
-    std::vector<vecComplex> U;
-    //boolean to tell if the operator has been constructed yet
-    bool constructed;
-    //qbit(s) the gate is applied to
-    std::vector<ubyte> qbit;
-    //Function that constructs the matrix if it hasn't been
-    //already
+    void construct();
+    complex at(int i, int j) override;
 
     
-    //Kronecker deltas with only 1/0 as options
-    //is just /delta_{1,b} = !(a xor b)
-    bool notKDelta(bool a, bool b) { return (a ^ b); }
+private:
+    bool constructed;
+    ubyte controlL;
+    ubyte sizeL;
+    ubyte sizeM;
+    uint C;
+    uint a;
+
 };
 
 #endif

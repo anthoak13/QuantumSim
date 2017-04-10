@@ -17,3 +17,5 @@
 #include "OOracle.h"
 #include "OJGrover.h"
 #include "OPhaseShift.h"
+#include "OCPhaseShift.h"
+#include "OfGate.h"

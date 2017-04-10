@@ -20,6 +20,7 @@
 //forward decl
 void printState(const vecBool& state);
 void GroverAlg(QuantumRegister& reg);
+void ShorAlg(QuantumRegister& reg);
 void test1(QuantumRegister& reg);
 
 const double PI  =3.141592653589793238463;
@@ -33,12 +34,18 @@ int main(int argc, char **argv)
     QuantumRegister reg(6);
 
     //run tests
-    TestHelper::runTest(test1, reg, 1000, false);
+    TestHelper::runTest(ShorAlg, reg, 1000, false);
 
     //re-run the test, should be 50/50 |000>/|100>
-    TestHelper::runTest(GroverAlg, reg, 1000, false);
+    //TestHelper::runTest(GroverAlg, reg, 1000, false);
 
     return 0;
+}
+
+void ShorAlg(QuantumRegister& reg)
+{
+    Operator *test = new OfGate(15,3,4,2,2);
+    dynamic_cast<OfGate*>(test)->construct();
 }
 
 void GroverAlg(QuantumRegister& reg)
@@ -87,6 +94,12 @@ void GroverAlg(QuantumRegister& reg)
     std::cout << "Algorithm took "<<
 	std::chrono::duration_cast<std::chrono::milliseconds>(
 	    stop - start).count() << " ms" << std::endl;
+
+    delete J;
+    delete Oracle;
+    for(int i = 0; i < N; i++)
+	delete HOpps.at(i);
+
 }
 void test1(QuantumRegister& reg)
 {

@@ -27,7 +27,9 @@ class Operator
 {
 public:
     virtual complex at(int a, int b) =0;
+
     uint size() {return 1 << N;};
+
     virtual void print() {
 	for(auto&& vec : O)
 	{

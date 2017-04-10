@@ -29,7 +29,8 @@ void OGenerating::print()
 }
 complex OGenerating::at(int a, int b)
 {
-    construct();
+    if(!constructed)
+	construct();
     return O.at(a).at(b);
 }
 
