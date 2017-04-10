@@ -10,23 +10,20 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef ONOT_H
-#define ONOT_H
 
-//Class for Hadamard gate for 3 bit system
-#include <cmath>
-#include <iostream>
-#include <vector>
-#include "OGenerating.h"
+#include "OCNot.h"
 
-class ONot : public OGenerating
+
+OCNot::OCNot(ubyte controlBit, ubyte notBit, ubyte N)
 {
-public:
-    //controlBit is the bit to control on,
-    //notBit is the bit to flip,
-    //N is the size of the register
-    ONot(ubyte controlBit, ubyte notBit, ubyte N);
+    U = {{1, 0, 0, 0},
+	 {0, 1, 0, 0},
+	 {0, 0, 0, 1},
+	 {0, 0, 1, 0}};
 
-};
+    constructed = false;
 
-#endif
+    this->N = N;
+    qbit.push_back(controlBit);
+    qbit.push_back(notBit);
+}

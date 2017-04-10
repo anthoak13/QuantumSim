@@ -10,10 +10,20 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifndef OCPHASESHIFT_H
+#define OCPHASESHIFT_H
 
-//include all opertators
-#include "OHadamard.h"
-#include "OCNot.h"
-#include "OOracle.h"
-#include "OJGrover.h"
-#include "OPhaseShift.h"
+//Class for Hadamard gate for N bit system
+#include <cmath>
+#include "OGenerating.h"
+
+class OCPhaseShift : public OGenerating
+{
+public:
+    //qbit is the bit to be operated on, N is the size of
+    //the register
+    OCPhaseShift(double theta, ubyte controlbit, ubyte qbit, ubyte N);
+
+};
+
+#endif

@@ -11,9 +11,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-//include all opertators
-#include "OHadamard.h"
-#include "OCNot.h"
-#include "OOracle.h"
-#include "OJGrover.h"
-#include "OPhaseShift.h"
+//implimentation of phase shift gate for an N bit system
+
+
+#include "OCPhaseShift.h"
+
+OCPhaseShift::OCPhaseShift(double theta, ubyte controlbit,
+			   ubyte qbit, ubyte N)
+{
+    complex i(0,1);
+    //Initialize the 4x4 operator
+    U =	{{1,0,0,0},
+	 {0,1,0,0},
+	 {0,0,1,0},
+	 {0,0,0,std::exp(i*theta)}};
+
+    //Set constructed to false
+    constructed = false;
+
+    this->N = N;
+    this->qbit.push_back(controlbit);
+    this->qbit.push_back(qbit);
+}
+
+

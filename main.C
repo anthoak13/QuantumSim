@@ -30,7 +30,7 @@ using uint = unsigned int;
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(10);
+    QuantumRegister reg(6);
 
     //run tests
     TestHelper::runTest(test1, reg, 1000, false);
@@ -45,7 +45,7 @@ void GroverAlg(QuantumRegister& reg)
 {
     
     const ubyte N = reg.size();
-    const uint soln = (1 << 6) + 1;
+    const uint soln = 41;
     uint numRep = std::floor(PI/4*std::sqrt(1 << N));
     numRep += 0;
     std::cout << "Running Grover's " << numRep << " times."

@@ -10,20 +10,23 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifndef OCNOT_H
+#define OCNOT_H
 
-#include "ONot.h"
+//Class for a controlled not gate
+#include <cmath>
+#include <iostream>
+#include <vector>
+#include "OGenerating.h"
 
-
-ONot::ONot(ubyte controlBit, ubyte notBit, ubyte N)
+class OCNot : public OGenerating
 {
-    U = {{1, 0, 0, 0},
-	 {0, 1, 0, 0},
-	 {0, 0, 0, 1},
-	 {0, 0, 1, 0}};
+public:
+    //controlBit is the bit to control on,
+    //notBit is the bit to flip,
+    //N is the size of the register
+    OCNot(ubyte controlBit, ubyte notBit, ubyte N);
 
-    constructed = false;
+};
 
-    this->N = N;
-    qbit.push_back(controlBit);
-    qbit.push_back(notBit);
-}
+#endif
