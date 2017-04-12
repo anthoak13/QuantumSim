@@ -50,7 +50,7 @@ void OGenerating::construct()
     //ie for H^(1) locOfBit is 2^2.
     uint locOfBit = 0;
     for(uint i = 0; i < qbit.size(); i++)
-	locOfBit |= 1 << (N - qbit.at(i));
+	locOfBit |= 1 << (qbit.at(i));
     
 
     //Loop through each row of the matrix
@@ -93,10 +93,10 @@ void OGenerating::construct()
 		for(uint k = 0; k < qbit.size(); k++)
 		{
 		    iPrime +=
-			( !!(i & (1 << N-qbit.at(k))))
+			( !!(i & (1 << qbit.at(k))))
 			<< (qbit.size() - 1 - k);
 		    jPrime +=
-			( !!(j & (1 << N-qbit.at(k))))
+			( !!(j & (1 << qbit.at(k))))
 			<< (qbit.size() - 1 - k);
 		}
 		

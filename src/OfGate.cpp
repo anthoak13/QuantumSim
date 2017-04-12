@@ -73,13 +73,15 @@ void OfGate::construct()
 	}
 
     }//End loop through columns
-
-    /*for(auto&& row : O)
+/*
+    for(auto&& row : O)
     {
 	int sum = 0;
 	for(auto&& elem : row)
-	    sum += std::abs(elem);
-	std::cout << sum << std::endl;
+	    std::cout << elem ;
+        // sum += std::abs(elem);
+	//std::cout << sum << std::endl;
+	std::cout << std::endl;
 	} */
     
     constructed = true;

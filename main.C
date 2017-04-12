@@ -31,9 +31,13 @@ using uint = unsigned int;
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(6);
+    QuantumRegister reg(7);
+    reg.prepareState(1);
 
     //run tests
+    TestHelper::runTest(test1, reg, 1000, false);
+
+    //rerun test, performing mod operations
     TestHelper::runTest(ShorAlg, reg, 1000, false);
 
     //re-run the test, should be 50/50 |000>/|100>
@@ -44,8 +48,28 @@ int main(int argc, char **argv)
 
 void ShorAlg(QuantumRegister& reg)
 {
-    Operator *test = new OfGate(15,3,4,2,2);
-    dynamic_cast<OfGate*>(test)->construct();
+    //Create gates to find f(x)
+    std::vector<OfGate*> a;
+    std::vector<Operator*> H;
+    for(int i = 0; i < 3; i++)
+    {
+	a.push_back(new OfGate(15,3,4,7,i));
+	H.push_back(new OHadamard(i+4,7));
+    }
+
+    std::cout << "Building operators..." << std::endl;
+    for(int i = 0; i < 3; i++)
+	a.at(i)->construct();
+
+    std::cout << "Putting x in superposition..." << std::endl;
+    //Put x-register into a superposition
+    for(auto&& gate : H)
+	reg.apply(gate);
+    
+    std::cout << "Doing multiplication..." << std::endl;
+    //Perform multiplication on f-register
+    for(auto&& gate : a)
+	reg.apply(gate);
 }
 
 void GroverAlg(QuantumRegister& reg)
