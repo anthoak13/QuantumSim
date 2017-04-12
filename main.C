@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
 void ShorAlg(QuantumRegister& reg)
 {
-    //Create gates to find f(x)
+    //Create gates for Shor
     std::vector<OfGate*> a;
     std::vector<Operator*> H;
     for(int i = 0; i < 3; i++)
@@ -56,6 +56,10 @@ void ShorAlg(QuantumRegister& reg)
 	a.push_back(new OfGate(15,3,4,7,i));
 	H.push_back(new OHadamard(i+4,7));
     }
+    //Create controlled R gates
+    Operator* R1 = new OCPhaseShift(PI/2, 6, 5, 7);
+    Operator* R2 = new OCPhaseShift(PI/4, 6, 4, 7);
+    Operator* R3 = new OCPhaseShift(PI/2, 5, 4, 7);
 
     std::cout << "Building operators..." << std::endl;
     for(int i = 0; i < 3; i++)
@@ -70,6 +74,15 @@ void ShorAlg(QuantumRegister& reg)
     //Perform multiplication on f-register
     for(auto&& gate : a)
 	reg.apply(gate);
+
+    //Apply IQFT
+    std::cout << "Applying IQFT..." << std::endl;
+    reg.apply(H.at(2));
+    reg.apply(R1);
+    reg.apply(R2);
+    reg.apply(H[1]);
+    reg.apply(R3);
+    reg.apply(H[0]);
 }
 
 void GroverAlg(QuantumRegister& reg)
