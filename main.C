@@ -20,8 +20,9 @@
 //forward decl
 void printState(const vecBool& state);
 void GroverAlg(QuantumRegister& reg);
-void ShorAlg(QuantumRegister& reg);
-void test1(QuantumRegister& reg);
+void ShorAlg(uint C, uint a, QuantumRegister& reg,
+	     uint fRegSize = 0);
+void empty(QuantumRegister& reg);
 
 const double PI  =3.141592653589793238463;
 
@@ -35,10 +36,12 @@ int main(int argc, char **argv)
     reg.prepareState(1);
 
     //run tests
-    TestHelper::runTest(test1, reg, 1000, false);
+    TestHelper::runTest(empty, reg, 1000, false);
 
+    ShorAlg(15,7,reg, 4);
+    
     //rerun test, performing mod operations
-    TestHelper::runTest(ShorAlg, reg, 1000, false);
+    TestHelper::runTest(empty, reg, 1000, false);
 
     //re-run the test, should be 50/50 |000>/|100>
     //TestHelper::runTest(GroverAlg, reg, 1000, false);
@@ -46,43 +49,66 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void ShorAlg(QuantumRegister& reg)
+void ShorAlg(uint C, uint a, QuantumRegister& reg, uint fRegSize)
 {
+    //Setup constants
+    //If fReg wasn't definied, select it to be greater than the theoretical minimum required
+    //2^fReg >= C
+    fRegSize = (fRegSize == 0) ? std::ceil(std::log(C)/std::log(2)) : fRegSize;
+    uint xRegSize = reg.size() - fRegSize;
+    
     //Create gates for Shor
-    std::vector<OfGate*> a;
-    std::vector<Operator*> H;
-    for(int i = 0; i < 3; i++)
+    std::vector<OfGate*> aGates;
+    std::vector<OGenerating*> H;
+    std::vector<OGenerating*> RGates;
+    for(int i = 0; i < xRegSize; i++)
     {
-	a.push_back(new OfGate(15,3,4,7,i));
-	H.push_back(new OHadamard(i+4,7));
+	//std::cout << C << " " << xRegSize << " " << fRegSize
+	//	  << " " << a << " " << i << std::endl;
+	aGates.push_back(new OfGate(C,xRegSize,fRegSize,a,i));
+	H.push_back(new OHadamard(i+fRegSize,reg.size()));
     }
+    
     //Create controlled R gates
-    Operator* R1 = new OCPhaseShift(PI/2, 6, 5, 7);
-    Operator* R2 = new OCPhaseShift(PI/4, 6, 4, 7);
-    Operator* R3 = new OCPhaseShift(PI/2, 5, 4, 7);
+    RGates.push_back(new OCPhaseShift(PI/2, 6, 5, 7));
+    RGates.push_back(new OCPhaseShift(PI/4, 6, 4, 7));
+    RGates.push_back(new OCPhaseShift(PI/2, 5, 4, 7));
 
-    std::cout << "Building operators..." << std::endl;
-    for(int i = 0; i < 3; i++)
-	a.at(i)->construct();
+    //Construct the operators
+    std::cout << "Building gates..." << std::endl;
+    for(int i = 0; i < xRegSize; i++)
+    {
+	aGates.at(i)->construct();
+	H.at(i)->construct();
+    }
+    for(auto&& gate : RGates)
+	gate->construct();
 
+    //Actually begin the calculation
     std::cout << "Putting x in superposition..." << std::endl;
-    //Put x-register into a superposition
     for(auto&& gate : H)
 	reg.apply(gate);
     
     std::cout << "Doing multiplication..." << std::endl;
-    //Perform multiplication on f-register
-    for(auto&& gate : a)
+    for(auto&& gate : aGates)
 	reg.apply(gate);
 
     //Apply IQFT
     std::cout << "Applying IQFT..." << std::endl;
     reg.apply(H.at(2));
-    reg.apply(R1);
-    reg.apply(R2);
+    reg.apply(RGates[0]);
+    reg.apply(RGates[1]);
     reg.apply(H[1]);
-    reg.apply(R3);
+    reg.apply(RGates[2]);
     reg.apply(H[0]);
+
+    //Cleanup gates
+    for(auto&& gate : aGates)
+	delete gate;
+    for(auto&& gate : H)
+	delete gate;
+    for(auto&& gate : RGates)
+	delete gate;
 }
 
 void GroverAlg(QuantumRegister& reg)
@@ -138,7 +164,7 @@ void GroverAlg(QuantumRegister& reg)
 	delete HOpps.at(i);
 
 }
-void test1(QuantumRegister& reg)
+void empty(QuantumRegister& reg)
 {
 
 }

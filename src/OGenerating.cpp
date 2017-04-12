@@ -39,8 +39,8 @@ void OGenerating::construct()
     //if the operator has already been created, skip
     if(constructed)
 	return;
-    std::cout << "Constructing the operator " << (int)qbit.at(0)
-	      << "..." << std::endl;
+    // std::cout << "Constructing the operator " << (int)qbit.at(0)
+    //<< "..." << std::endl;
 
     //The matrix is a 2^N square matrix
     uint size = 1 << N;
