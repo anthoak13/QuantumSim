@@ -24,6 +24,8 @@ public:
     OOracle(uint answer, ubyte N);
     
     complex at(int a, int b) override;
+private:
+    uint answer;
 };
 
 #endif

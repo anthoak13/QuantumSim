@@ -101,11 +101,14 @@ void QuantumRegister::apply(Operator* O)
 
     //usig new_i = O_{i,j}old_j
     //std::cout << "Reg size is " << reg.size() << std::endl;
+
     for(uint i = 0; i < reg.size(); i++)
     {
 	reg.at(i) = 0;
 	for(uint j = 0; j < reg.size(); j++)
-	    reg.at(i) += O->at(i,j)*temp.at(j);
+	    if(O->at(i,j) != complex(0,0) &&
+	       temp.at(j) != complex(0,0))
+		reg.at(i) += O->at(i,j)*temp.at(j);
     }
 }
     
