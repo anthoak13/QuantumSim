@@ -147,6 +147,20 @@ void GroverAlg(QuantumRegister& reg, uint soln)
     //Create oracle and J
     Operator* Oracle = new OOracle(soln,N);
     Operator* J = new OJGrover(N);
+
+    /*//Create gate Array to store the diffusion opp
+    OGateArray* diffOp = new OGateArray(N);
+
+    //Add diffusion opp
+    diffOp->addGate(Oracle);
+    //diffOp->print();
+    for(int i = 0; i < N; i++)
+	diffOp->addGate(HOpps.at(i));
+    //diffOp->print();
+    diffOp->addGate(J);
+    for(int i = 0; i < N; i++)
+	diffOp->addGate(HOpps.at(i));
+    */
       
     auto stop = Clock::now();
     std::cout << "Generating matrices took "<<
@@ -165,26 +179,22 @@ void GroverAlg(QuantumRegister& reg, uint soln)
     //Repeat grover's numRep times
     for(uint i = 0; i < numRep; i++)
     {
-	//apply the oracale opp
+	//reg.apply(diffOp);
 	reg.apply(Oracle);
-
-	//Apply all of the Hadamard gates
 	for(int i = 0; i < N; i++)
 	    reg.apply(HOpps.at(i));
-
-	//Apply diffusion operator
 	reg.apply(J);
-
-	//Apply Hadamard gates again
 	for(int i = 0; i < N; i++)
 	    reg.apply(HOpps.at(i));
-	    }
+
+    }
 
     stop = Clock::now();
     std::cout << "Calculations took "<<
 	std::chrono::duration_cast<std::chrono::milliseconds>(
 	    stop - start).count() << " ms" << std::endl;
 
+//    delete diffOp;
     delete J;
     delete Oracle;
     for(int i = 0; i < N; i++)

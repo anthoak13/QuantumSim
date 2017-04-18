@@ -11,12 +11,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-//include all opertators
-#include "OHadamard.h"
-#include "OCNot.h"
-#include "OOracle.h"
-#include "OJGrover.h"
-#include "OPhaseShift.h"
-#include "OCPhaseShift.h"
-#include "OfGate.h"
-#include "OGateArray.h"
+
+#ifndef OGATEARRAY_H
+#define OGATEARRAY_H
+
+//definition of J operator for grover's algorithm
+#include "Operator.h"
+
+class OGateArray : public Operator
+{
+public:
+    OGateArray(ubyte N);
+    void addGate(Operator* G);
+
+    complex at(int a, int b) override;
+private:
+    bool empty;
+};
+
+
+
+#endif

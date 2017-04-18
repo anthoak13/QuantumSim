@@ -1,6 +1,6 @@
 #!/bin/bash
 
-make
+make sparse
 for i in {1..3}
 do
     echo "Running time $i"
