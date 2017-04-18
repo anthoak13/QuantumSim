@@ -21,28 +21,54 @@
 
 using ubyte = unsigned char;
 using complex = std::complex<double>;
+using complexPair = std::pair<uint, complex>;
 using vecComplex = std::vector<complex>;
+using vecComplexPair = std::vector< complexPair>;
+using matrix = std::vector< std::vector< complex > >;
+using sparseMatrix = std::vector< vecComplexPair >;
+
 
 class Operator
 {
 public:
+#ifdef SPARSE
+    const sparseMatrix& getMatrix() { return O; }
+#else
+    const matrix& getMatrix() {return O;}
+#endif
     virtual complex at(int a, int b) =0;
 
     uint size() {return 1 << N;};
 
     virtual void print() {
-	for(auto&& vec : O)
+	//get row in vec
+	for(auto&& row : O)
 	{
-	    for(auto&& elem : vec)
+	    //get either elem or pair in each row.
+	    for(auto&& elem : row)
+#ifndef SPARSE
 		std::cout << elem << " ";
+#else
+	    {
+		std::cout << "( " << elem.first << " "
+			  << elem.second << ")" << std::endl;
+	    }
+#endif
 	    std::cout << std::endl;
 	}
     };
 protected:
     //The size of the register this gate can be applied to
     ubyte N;
+    
     //vector to store the matrix operator
-    std::vector<vecComplex> O;
+#ifndef SPARSE
+    matrix O;
+#else
+    sparseMatrix O;
+#endif
+    //Sparce matrix representation
+    //sparseMatrix O;
 
 };
 #endif

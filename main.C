@@ -23,6 +23,7 @@ void GroverAlg(QuantumRegister& reg, uint soln);
 void ShorAlg(uint C, uint a, QuantumRegister& reg,
 	     uint fRegSize = 0);
 void empty(QuantumRegister& reg);
+void testHad(QuantumRegister& reg);
 
 const double PI  =3.141592653589793238463;
 
@@ -32,14 +33,15 @@ using uint = unsigned int;
 int main(int argc, char **argv)
 {
     //create register initially in |000>
-    QuantumRegister reg(10);
+    QuantumRegister reg(8);
     reg.prepareState(0);
 
     //run tests
     TestHelper::runTest(empty, reg, 1000, false);
 
     //ShorAlg(15,7,reg, 4);
-    GroverAlg(reg, 4);
+    GroverAlg(reg, 7);
+    //testHad(reg);
     //rerun test, performing mod operations
     TestHelper::runTest(empty, reg, 1000, false);
 
@@ -48,7 +50,17 @@ int main(int argc, char **argv)
 
     return 0;
 }
+void testHad(QuantumRegister& reg)
+{
+    OGenerating* H = new OHadamard(2, reg.size());
+    H->construct();
+    //H->print();
+    //reg.apply(H);
 
+    Operator* J = new OOracle(4,reg.size());
+    J->print();
+    
+}
 void ShorAlg(uint C, uint a, QuantumRegister& reg, uint fRegSize)
 {
     //Setup constants
@@ -144,9 +156,11 @@ void GroverAlg(QuantumRegister& reg, uint soln)
 
     start = Clock::now();
     //Setup the system in a complete mixed state
+
+    //std::cout << "Putting in super position... ";
     for(int i = 0; i < N; i++)
 	reg.apply(HOpps.at(i));
-
+    //std::cout << "Done" << std::endl;
     
     //Repeat grover's numRep times
     for(uint i = 0; i < numRep; i++)

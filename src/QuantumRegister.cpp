@@ -98,17 +98,28 @@ void QuantumRegister::collapse()
 void QuantumRegister::apply(Operator* O)
 {
     auto temp = reg;
-
+    auto Opp = O->getMatrix();
     //usig new_i = O_{i,j}old_j
     //std::cout << "Reg size is " << reg.size() << std::endl;
 
     for(uint i = 0; i < reg.size(); i++)
     {
 	reg.at(i) = 0;
+	
+#ifndef SPARSE
+	//Do full matrix mult
 	for(uint j = 0; j < reg.size(); j++)
 	    if(O->at(i,j) != complex(0,0) &&
 	       temp.at(j) != complex(0,0))
 		reg.at(i) += O->at(i,j)*temp.at(j);
+#else
+	//get row from the vector of pairs
+	for(auto& row : Opp.at(i))
+	    //DO multiplication if register isn't zero
+	    if(temp.at(row.first) != complex(0,0))
+		reg.at(i) += row.second * temp.at(row.first);
+	    
+#endif
     }
 }
     

@@ -21,7 +21,11 @@ void OfGate::construct()
    
     //Initialize an empty kXk matrix
     for(int i = 0; i < kMax; i++)
+#ifndef SPARSE
     	O.push_back(vecComplex(kMax, 0));
+#else
+        O.push_back(vecComplexPair{});
+#endif
 
    //Calcualte the A val to use and measure the quantum reg
     uint A;
@@ -50,7 +54,11 @@ void OfGate::construct()
             //if f reg is >= C, put on the diagonal, otherwise
 	    //calulate a new f val.
 	    if(f >= C)
+#ifndef SPARSE
 		O.at(k).at(k) = 1;
+#else
+	        O.at(k).push_back(complexPair(k,1));
+#endif
 	    else
 	    {
 		uint j = (A*f) % C;
@@ -61,7 +69,11 @@ void OfGate::construct()
 
 
 		//std::cout << " and new j is " << j << std::endl;
+#ifndef SPARSE
 		O.at(j).at(k) = 1;
+#else
+		O.at(j).push_back(complexPair(k,1));
+#endif
 		
 	    }
 	
@@ -69,7 +81,11 @@ void OfGate::construct()
 	else //if controlL is zero
 	{
 	    //std::cout << "Control l is zero" << std::endl;
+#ifndef SPARSE
 	    O.at(k).at(k) = 1;
+#else
+	    O.at(k).push_back(complexPair(k,1));
+#endif
 	}
 
     }//End loop through columns
@@ -87,7 +103,19 @@ void OfGate::construct()
     constructed = true;
 }
 
-complex OfGate::at(int i, int j)
+complex OfGate::at(int a, int b)
 {
-    return O.at(i).at(j);
+    if(!constructed)
+	construct();
+    //Code for sparce matrix
+#ifdef SPARSE
+    for(auto&& elem : O.at(a))
+	if(elem.first == b)
+	    return elem.second;
+    //If it wasn't found, just return
+    return 0;
+#else
+    //Code for full matrix
+    return O.at(a).at(b);
+#endif
 }

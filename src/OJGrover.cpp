@@ -17,8 +17,8 @@
 
 OJGrover::OJGrover(ubyte N)
 {
-    /*this->N = N;
-    for(uint i = 0; i < this->size(); i++)
+    this->N = N;
+    /*for(uint i = 0; i < this->size(); i++)
     {
 	O.push_back(vecComplex{});
 	for(uint j = 0; j < this->size(); j++)
@@ -27,6 +27,14 @@ OJGrover::OJGrover(ubyte N)
 	    else
 		O.at(i).push_back(0);
     }*/
+#ifdef SPARSE
+    O.push_back(vecComplexPair{complexPair(0,-1)});
+    for(uint i = 1; i < this->size(); i++)
+    {
+	O.push_back(vecComplexPair{
+		complexPair(i,1)});
+    }
+#endif
 }
 
 complex OJGrover::at(int a, int b)

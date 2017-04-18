@@ -20,18 +20,23 @@
 void OGenerating::print()
 {
     construct();
-    for(auto&& vec : O)
-    {
-	for(auto&& elem : vec)
-	    std::cout << elem << " ";
-	std::cout << std::endl;
-    }
+    Operator::print();
 }
 complex OGenerating::at(int a, int b)
 {
     if(!constructed)
 	construct();
+    //Code for sparce matrix
+#ifdef SPARSE
+    for(auto&& elem : O.at(a))
+	if(elem.first == b)
+	    return elem.second;
+    //If it wasn't found, just return
+    return 0;
+#else
+    //Code for full matrix
     return O.at(a).at(b);
+#endif
 }
 
 void OGenerating::construct()
@@ -56,8 +61,12 @@ void OGenerating::construct()
     //Loop through each row of the matrix
     for(uint i = 0; i < size; i++)
     {
-	//Add a blank vector representing the row
+        //Add a blank vector representing the row
+#ifndef SPARSE
 	O.push_back(vecComplex{});
+#else
+	O.push_back(vecComplexPair{});
+#endif
 
 	//Loop through each column
 	//(i,j) are matrix element being calculated
@@ -77,11 +86,14 @@ void OGenerating::construct()
 
 	    //double negation fixes the result at 1 or 0,
 	    //otherwise you can get any power of 2 (4 & 4 = 4).
+#ifndef SPARSE
 	    if(zero)
 		O.at(i).push_back(0);
 	    else
+#endif
+	    if(!zero)
 	    {
-		//Loop to calulate indices
+                //Loop to calulate indices
 		//std::cout << "Filling (" << i << "," << j << ") ";
 
 		//i' and j' are the indices to pull the value from
@@ -104,9 +116,14 @@ void OGenerating::construct()
 		//    " iPrime = " << iPrime << std::endl;
 
 		//Push back the proper term
+#ifndef SPARSE
 		O.at(i).push_back(U.at(iPrime)
 				  .at(jPrime));
-	    } //end else statement
+#else
+	    O.at(i).push_back(complexPair(j, U.at(iPrime)
+					  .at(jPrime)));
+#endif
+	    } //end else statement  
 	} //Endl loop thorugh j
     } //end loop though i
 
