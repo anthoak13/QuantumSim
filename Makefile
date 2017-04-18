@@ -56,7 +56,9 @@ LDFLAGS = -Llib
 
 debug: CXXFLAGS += -DDEBUG -g
 test: CXXFLAGS += -DDEBUG -g
+sparse: CXXFLAGS += -DSPARSE
 debug: build
+sparse: build
 
 #***************#
 #**** RULES ****#

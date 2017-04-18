@@ -30,6 +30,14 @@ OOracle::OOracle(uint answer, ubyte N)
 		}*/
     this->answer = answer;
     this->N = N;
+
+#ifdef SPARSE
+    for(uint i = 0; i < this->size(); i++)
+    {
+	O.push_back(vecComplexPair{ complexPair(
+		    i, i==answer ? -1: 1)});
+    }
+#endif
 }
 
 complex OOracle::at(int a, int b)
