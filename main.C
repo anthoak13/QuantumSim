@@ -13,6 +13,7 @@
 #include <chrono>
 #include <iostream>
 #include "QuantumRegister.h"
+#include "QFourierTrans.h"
 #include "TestHelper.h"
 #include "Operators.h"
 
@@ -32,19 +33,29 @@ using uint = unsigned int;
 
 int main(int argc, char **argv)
 {
+    int N;
+    if(argc > 1)
+	N = atoi(argv[1]);
+    else
+	N = 7;
+    
+    std::cout << "The size of the register is " << N
+	      << " bits." << std::endl;
+    
     //create register initially in |000>
-    QuantumRegister reg(8);
-    reg.prepareState(0);
+    QuantumRegister reg(N);
+    reg.prepareState(1);
 
     //run tests
     TestHelper::runTest(empty, reg, 1000, false);
 
-    //ShorAlg(15,7,reg, 4);
-    GroverAlg(reg, 7);
+    ShorAlg(15,7,reg, 4);
+    //GroverAlg(reg, 7);
     //testHad(reg);
     //rerun test, performing mod operations
     TestHelper::runTest(empty, reg, 1000, false);
 
+    QFourierTrans tran(7,3);
     //re-run the test, should be 50/50 |000>/|100>
     //TestHelper::runTest(GroverAlg, reg, 1000, false);
 
@@ -107,15 +118,20 @@ void ShorAlg(uint C, uint a, QuantumRegister& reg, uint fRegSize)
     for(auto&& gate : aGates)
 	reg.apply(gate);
 
-    //Apply IQFT
+
     std::cout << "Applying IQFT..." << std::endl;
+    QFourierTrans trans(reg.size(), xRegSize);
+    trans.applyInverse(reg);
+/*
+    //Apply IQFT
+
     reg.apply(H.at(2));
     reg.apply(RGates[0]);
     reg.apply(RGates[1]);
     reg.apply(H[1]);
     reg.apply(RGates[2]);
     reg.apply(H[0]);
-
+*/
     //Cleanup gates
     for(auto&& gate : aGates)
 	delete gate;
